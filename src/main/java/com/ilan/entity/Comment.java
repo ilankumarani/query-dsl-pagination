@@ -1,5 +1,6 @@
 package com.ilan.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,6 +29,7 @@ public class Comment {
     private boolean approved;
     private LocalDateTime postedAt;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
