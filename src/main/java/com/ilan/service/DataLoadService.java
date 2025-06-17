@@ -29,13 +29,13 @@ public class DataLoadService extends BaseData {
     private final SUsers sUsers = SUsers.users;
     private final SPosts sPosts = SPosts.posts;
     private final SComments sComments = SComments.comments;
-    private JPAQuery jpaQuery;
-    @PersistenceContext
-    private EntityManager entityManager;
 
     private final QUser qUser = QUser.user;
     private final QPost qPost = QPost.post;
     private final QComment qComment = QComment.comment;
+    @PersistenceContext
+    private EntityManager entityManager;
+    private JPAQuery jpaQuery;
 
     public void init() {
         jpaQuery = new JPAQuery<>(entityManager);

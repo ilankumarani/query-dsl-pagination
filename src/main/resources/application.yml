@@ -62,7 +62,10 @@ springdoc:
         prod: 'https://bezkoder-api.com'
 
 management:
-    endpoints.web.exposure.include: openapi, swagger-ui
+    endpoints:
+        web:
+            exposure:
+                include: "*"
 
 
 
