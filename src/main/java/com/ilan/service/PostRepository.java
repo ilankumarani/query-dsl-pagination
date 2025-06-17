@@ -9,6 +9,7 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.constraints.NotNull;
@@ -35,6 +36,7 @@ public class PostRepository {//} extends BaseQuerydslRepository<Post>{
     private JPAQueryFactory jpaQueryFactory;
 
 
+    @PostConstruct
     public void init() {
         jpaQueryFactory = new JPAQueryFactory(entityManager);
     }
