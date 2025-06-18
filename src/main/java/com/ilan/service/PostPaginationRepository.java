@@ -5,7 +5,10 @@ import com.ilan.entity.Post;
 import com.ilan.entity.QComment;
 import com.ilan.entity.QPost;
 import com.ilan.entity.QUser;
+import com.ilan.model.PostModel;
 import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.QBean;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -26,7 +29,7 @@ import static java.util.Optional.ofNullable;
 
 @Repository
 @RequiredArgsConstructor
-public class PostRepository {//} extends BaseQuerydslRepository<Post>{
+public class PostPaginationRepository {//} extends BaseQuerydslRepository<Post>{
 
     private final QUser qUser = QUser.user;
     private final QPost qPost = QPost.post;
@@ -42,18 +45,20 @@ public class PostRepository {//} extends BaseQuerydslRepository<Post>{
     }
 
     //Arrays.asList(1L)
-    public Page<Post> findAllPostByUserId(@NotNull List<Long> userIds, Pageable pageable) {
+    public Page<PostModel> findAllPostByUserId(@NotNull List<Long> userIds, Pageable pageable) {
         //Here we are firing one query to get the total Count of Rows for the Query
-        Long totalCount = findPostByUserId(qPost.id.count(), userIds).fetchOne();
 
-        JPAQuery<Post> query = findPostByUserId(qPost, userIds);
+        Long totalCount = findPostByUserId(qUser.id.count(), userIds).fetchOne();
+
+        QBean<PostModel> combined = Projections.bean(PostModel.class, qUser.id, qUser.username, qPost.title, qPost.content, qComment.author, qComment.approved);
+        JPAQuery<PostModel> query = findPostByUserId(combined, userIds);
 
         //Querydsl querydsl = new Querydsl(entityManager, new PathBuilder<>(Book.class, "book"));
 
         Querydsl querydsl = new Querydsl(entityManager, new PathBuilder<>(Post.class, "post"));
         ofNullable(querydsl).ifPresent(q -> q.applyPagination(pageable, query));
 
-        List<Post> pagedData = query.fetch();
+        List<PostModel> pagedData = query.fetch();
 
         return PageableExecutionUtils.getPage(pagedData, pageable, () -> totalCount);
     }
@@ -61,7 +66,22 @@ public class PostRepository {//} extends BaseQuerydslRepository<Post>{
     private <T> JPAQuery<T> findPostByUserId(Expression<T> expression, List<Long> userIds) {
         return jpaQueryFactory
                 .select(expression)
-                .from(qPost)
+                .from(qUser)
+                .join(qPost)
+                .on(qUser.id.eq(qPost.user.id))
+                .join(qComment)
+                .on(qComment.post.id.eq(qPost.id))
+                .where(qPost.user.id.in(userIds));
+    }
+
+    private <T> JPAQuery<T> findPostByUserId(QBean<T> qBean, List<Long> userIds) {
+        return jpaQueryFactory
+                .select(qBean)
+                .from(qUser)
+                .join(qPost)
+                .on(qUser.id.eq(qPost.user.id))
+                .join(qComment)
+                .on(qComment.post.id.eq(qPost.id))
                 .where(qPost.user.id.in(userIds));
     }
 }

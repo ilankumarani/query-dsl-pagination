@@ -2,7 +2,8 @@ package com.ilan.controller;
 
 
 import com.ilan.entity.Post;
-import com.ilan.service.PostRepository;
+import com.ilan.model.PostModel;
+import com.ilan.service.PostPaginationRepository;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,10 +20,10 @@ import java.util.List;
 @RequestMapping("/api/posts")
 public class PostController {
 
-    private final PostRepository postRepository;
+    private final PostPaginationRepository postPaginationRepository;
 
     @GetMapping
-    public Page<Post> getPostsByUserIds(@RequestParam @NotNull List<Long> userIds, Pageable pageable) {
-        return postRepository.findAllPostByUserId(userIds, pageable);
+    public Page<PostModel> getPostsByUserIds(@RequestParam @NotNull List<Long> userIds, Pageable pageable) {
+        return postPaginationRepository.findAllPostByUserId(userIds, pageable);
     }
 }
