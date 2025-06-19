@@ -55,7 +55,7 @@ public class PostPaginationRepository {//} extends BaseQuerydslRepository<Post>{
 
         //Querydsl querydsl = new Querydsl(entityManager, new PathBuilder<>(Book.class, "book"));
 
-        Querydsl querydsl = new Querydsl(entityManager, new PathBuilder<>(Post.class, "post"));
+        Querydsl querydsl = new Querydsl(entityManager, new PathBuilder<>(PostModel.class, "post"));
         ofNullable(querydsl).ifPresent(q -> q.applyPagination(pageable, query));
 
         List<PostModel> pagedData = query.fetch();
