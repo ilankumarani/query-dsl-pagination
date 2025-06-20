@@ -13,8 +13,6 @@ import com.querydsl.core.types.Path;
 import com.querydsl.sql.ColumnMetadata;
 import java.sql.Types;
 
-import io.github.openfeign.querydsl.sql.json.types.*;
-import io.github.openfeign.querydsl.sql.json.*;
 
 
 
