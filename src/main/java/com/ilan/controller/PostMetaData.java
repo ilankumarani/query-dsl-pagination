@@ -15,15 +15,6 @@ import java.util.List;
 
 public interface PostMetaData {
 
-    @Value("${default.size}")
-    Integer size = 1;
-
-    @Value("${default.page}")
-    Integer page = 10;
-
-
-
-
     @GetMapping("/api/posts")
-    Page<PostModel> getPostsByUserIds(@RequestParam @NotNull List<Long> userIds, @PageableDefault(size = size, page = page) Pageable pageable);
+    Page<PostModel> getPostsByUserIds(@RequestParam @NotNull List<Long> userIds, @PageableDefault(size = 0, page = 10) Pageable pageable);
 }
