@@ -76,3 +76,8 @@ query:
                 enabled: false
             output:
                 directory: ../java/dsl
+
+
+default:
+    size: 10
+    page: 1
