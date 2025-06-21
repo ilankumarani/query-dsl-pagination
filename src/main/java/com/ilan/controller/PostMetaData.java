@@ -15,12 +15,10 @@ import java.util.List;
 
 public interface PostMetaData {
 
-    @Setter(onMethod_ = @Value("${default.size}"))
-    @Getter
+    @Value("${default.size}")
     Integer size = 0;
 
-    @Setter(onMethod_ = @Value("${default.page}"))
-    @Getter
+    @Value("${default.page}")
     Integer page = 30;
 
 
