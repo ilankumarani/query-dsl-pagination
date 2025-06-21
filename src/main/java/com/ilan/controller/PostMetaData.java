@@ -16,10 +16,10 @@ import java.util.List;
 public interface PostMetaData {
 
     @Value("${default.size}")
-    Integer size = 0;
+    Integer size = 1;
 
     @Value("${default.page}")
-    Integer page = 30;
+    Integer page = 10;
 
 
 
